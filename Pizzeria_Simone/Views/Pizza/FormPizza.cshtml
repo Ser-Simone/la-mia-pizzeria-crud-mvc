@@ -1,0 +1,49 @@
+﻿@model Pizza
+
+<body>
+    <main>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class = "row mt-3 justify-content-center">
+                    <div class ="col-6 justify-content-center mb-5">
+                  
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <img src="https://toolset.mrw.it/temp/logo_b678251e29ce485d9852306f8558a312.png" class="card-img-top" alt="primaFoto">
+                </div>
+                <form action="@Url.Action("Create", "Pizza")" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="col-3 mb-3">
+                        <h2> Titolo: </h2>
+                        <input asp-for="Title" class="d-block w-100" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="col-3 mb-5">
+                        <h2> Prezzo</h2>
+                        <input asp-for="Price" class="d-block w-100" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <h2>Imagine</h2>
+                        <input asp-for="Image" class="d-block w-100" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <div class="col-3 mb-3">
+                        <img src="https://toolset.mrw.it/temp/logo_050c9ff9bece8d5055a4d81ddd6c9077.png" />
+                        <textarea asp-for="Description" rows="10" class="d-block w-100"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="text-start">
+                        <input type="submit" class="btn btn-small btn-success" value="Salva">
+                    </div>
+                
+
+                </form>
+            </div>
+        </div>
+    </div>
+    </main>
+</body>
