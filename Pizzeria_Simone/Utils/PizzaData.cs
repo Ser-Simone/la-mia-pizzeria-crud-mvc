@@ -15,11 +15,10 @@ namespace Pizzeria_Simone.Utils
 
             List<Pizza> Nuovapizza = new List<Pizza>();
 
-            for (int i = 0; i < 5; i++)
-            {
-                Pizza pizza = new Pizza(i, "Titolo post: " +i , "Lorem Ipsum...." , "0 ", 5);
+         
+                Pizza pizza = new Pizza(1, "Titolo post: " , "Lorem Ipsum...."," ", 5);
                 Nuovapizza.Add(pizza);
-            }
+            
             PizzaData.pizzas = Nuovapizza;
             return PizzaData.pizzas;
         }
