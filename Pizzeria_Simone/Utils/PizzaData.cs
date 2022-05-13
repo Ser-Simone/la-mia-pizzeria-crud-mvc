@@ -13,13 +13,13 @@ namespace Pizzeria_Simone.Utils
                 return PizzaData.pizzas;
             }
 
-            List<Pizza> Nuovapizza = new List<Pizza>();
+            List<Pizza> nuovaPizza = new List<Pizza>();
 
          
-                Pizza pizza = new Pizza(1, "Titolo post: " , "Lorem Ipsum...."," ", 5);
-                Nuovapizza.Add(pizza);
+                //Pizza pizza = new Pizza(0, "Titolo post: " , "Lorem Ipsum...."," ", 5);
+                //Nuovapizza.Add(pizza);
             
-            PizzaData.pizzas = Nuovapizza;
+            PizzaData.pizzas = nuovaPizza;
             return PizzaData.pizzas;
         }
         

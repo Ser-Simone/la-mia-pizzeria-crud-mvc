@@ -22,13 +22,13 @@ namespace Pizzeria_Simone.Models
 
         }
 
-        public Pizza(int id, string Title, string Description, string Image, double Price)
+        public Pizza(int id, string title, string description, string image, double price)
         {
-            this.Id = Id;
-            this.Title = Title;
-            this.Description = Description; 
-            this.Image = Image;
-            this.Price = Price;
+            this.Id = id;
+            this.Title = title;
+            this.Description = description; 
+            this.Image = image;
+            this.Price = price;
 
         }
 

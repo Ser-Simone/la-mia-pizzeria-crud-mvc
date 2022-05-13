@@ -48,7 +48,7 @@ namespace Pizzeria_Simone.Controllers
             Pizza pizza = new Pizza(PizzaData.GetPizza().Count, nuovaPizza.Title, nuovaPizza.Description, nuovaPizza.Image, nuovaPizza.Price);
             // il mio modello è corretto
 
-            PizzaData.GetPizza().Add(nuovaPizza);
+            PizzaData.GetPizza().Add(pizza);
             return RedirectToAction("Index");
         }
 
