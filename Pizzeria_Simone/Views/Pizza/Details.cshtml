@@ -2,13 +2,18 @@
 @{
     Layout = "_MioLayout";
 }
-                <div class="card-body p-0 bg-opacity-50">
-                    <h5 class="card-title bg-warning text-white p-2">@Model.Title</h5>
-                    <p class="card-text text-center p-3">@Model.Description</p>
-                    <hr class="m-0" >
-                    <p class="text-warning p-0 m-0 fs-6" >ATTE </p>
-                    <p class="p-4"> <b>@Model.Price €</b></p>
-                </div>
-            </div>
-    </div>
-</div>
+               <div class="container align-content-center">
+          <div class="row">
+            <div class="col-1">    </div>
+            <div class="col-10 align-content-center">
+              <div class="card mb-3" style="max-width: 540px;">
+               <div class="row g-0">
+                     <div class="col-md-4">
+                         <img src="@Model.Image" class="img-thumbnail img-fluid Image" alt="pizza_margherita">
+                     </div>
+                     <div class="col-md-8">
+                        <div class="card-body bg-opacity-10">
+                           <h5 class="card-title text-danger Title">@Model.Title</h5>
+                           <p class="card-text Price"><span class="badge bg-success"> € @Model.Price</span></p>
+                           <p class="card-text Description">@Model.Description</p>
+                        </div>

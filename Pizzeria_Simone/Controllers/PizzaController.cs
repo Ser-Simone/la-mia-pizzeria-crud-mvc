@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pizzeria_Simone.Data;
 using Pizzeria_Simone.Models;
-using Pizzeria_Simone.Utils;
 
 namespace Pizzeria_Simone.Controllers
 {
@@ -10,22 +10,34 @@ namespace Pizzeria_Simone.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            List<Pizza> pizza = PizzaData.GetPizza();
-            return View("HomePage", pizza);
+            List<Pizza> listapizza = new List<Pizza>();
+          
+            using (BlogContext databPizza = new BlogContext()) 
+            {
+                listapizza = databPizza.Pizzaset.ToList<Pizza>();
+            }
+            return View("HomePage", listapizza);
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
-            Pizza pizzaFound = GetPizzaById(id);
+            using (BlogContext dbPizza = new BlogContext())
+            {
+                try
+                {
+                    Pizza pizzaFound = dbPizza.Pizzaset
+                        .Where(pizza => pizza.Id == id)
+                        .First();
 
-            if (pizzaFound != null)
-            {
-                return View("Details", pizzaFound);
-            }
-            else
-            {
-                return NotFound("la pizza con id" + id + " non è stato trovato");
+                    return View("Details", pizzaFound);
+                } catch (InvalidOperationException ex)
+                {
+                    return NotFound("la pizza con id" + id + " non è stato trovato");
+                } catch (Exception ex)
+                {
+                    return BadRequest();
+                }
             }
 
         }
@@ -45,17 +57,26 @@ namespace Pizzeria_Simone.Controllers
                 return View("FormPizza", nuovaPizza);
             }
 
-            Pizza pizza = new Pizza(PizzaData.GetPizza().Count, nuovaPizza.Title, nuovaPizza.Description, nuovaPizza.Image, nuovaPizza.Price);
-            // il mio modello è corretto
-
-            PizzaData.GetPizza().Add(pizza);
+            using(BlogContext dbPizza = new BlogContext())
+            {
+                Pizza PizzaToCreate = new Pizza(nuovaPizza.Title, nuovaPizza.Description, nuovaPizza.Image, nuovaPizza.Price);
+                dbPizza.Pizzaset.Add(PizzaToCreate);
+                dbPizza.SaveChanges();
+            }
+            
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Update(int id)
         {
-            Pizza PizzaToEdit = GetPizzaById(id);
+            Pizza? PizzaToEdit = null;
+            using (BlogContext dbEdit = new BlogContext())
+            {
+                PizzaToEdit = dbEdit.Pizzaset
+                    .Where(pizza => pizza.Id == id)
+                    .FirstOrDefault();
+            }
 
             if (PizzaToEdit == null)
             {
@@ -74,21 +95,31 @@ namespace Pizzeria_Simone.Controllers
             {
                 return View("Update", model);
             }
-            Pizza pizzaOriginal = GetPizzaById(id);
+            Pizza PizzaToEdit = null;
 
-            if (pizzaOriginal != null)
+            using (BlogContext dbEdit = new BlogContext())
             {
-                pizzaOriginal.Title = model.Title;
-                pizzaOriginal.Description = model.Description;
-                pizzaOriginal.Image = model.Image;
+                PizzaToEdit = dbEdit.Pizzaset
+                   .Where(pizza => pizza.Id == id)
+                   .FirstOrDefault();
 
-                return RedirectToAction("Index");
-            } else
-            {
-                return NotFound();
+                if (PizzaToEdit != null)
+                {
+                    PizzaToEdit.Title = model.Title;
+                    PizzaToEdit.Description = model.Description;
+                    PizzaToEdit.Image = model.Image;
+                    PizzaToEdit.Price = model.Price;
+
+                    dbEdit.SaveChanges();
+
+                    return RedirectToAction("Index");
+                } else
+                {
+                    return NotFound();
+                }
             }
         }
-        private Pizza GetPizzaById(int id)
+     /*   private Pizza GetPizzaById(int id)
         {
             Pizza pizzaFound = null;
 
@@ -101,32 +132,32 @@ namespace Pizzeria_Simone.Controllers
                 }
             }
             return pizzaFound;
-        }
+        }*/
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            int PizzaIndexToRemove = -1;
 
-            List<Pizza> pizzaList = PizzaData.GetPizza();
-
-            for (int i = 0; i < pizzaList.Count; i++)
+                
+            using (BlogContext dbDelete = new BlogContext())
             {
-                if (pizzaList[i].Id == id)
+                Pizza PizzaToRemove = dbDelete.Pizzaset
+                    .Where(pizza => pizza.Id == id)
+                    .FirstOrDefault();
+            
+            
+            if(PizzaToRemove != null)
                 {
-                    PizzaIndexToRemove = i;
-                }  
-            }
+                    dbDelete.Pizzaset.Remove(PizzaToRemove);
+                    dbDelete.SaveChanges();
 
-            if (PizzaIndexToRemove >= 0)
-            {
-                PizzaData.GetPizza().RemoveAt(PizzaIndexToRemove);
-
-                return RedirectToAction("Index");
-            }else
-            {
-                return NotFound();
-            }
+                    return RedirectToAction("Index");
+                } else
+                {
+                    return NotFound();
+                }
+            }   
+            
         }
     }
 
