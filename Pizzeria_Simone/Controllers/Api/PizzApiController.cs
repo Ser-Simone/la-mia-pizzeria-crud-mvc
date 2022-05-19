@@ -21,5 +21,14 @@ namespace Pizzeria_Simone.Controllers.Api
             return Ok(listapizza);
         }
       
+        [HttpPost]
+        public IActionResult FavouritesController ()
+        {
+            List<Pizza> listapizza = new List<Pizza>();
+
+
+
+            return Ok(listapizza);
+        }
     }
 }
