@@ -45,25 +45,43 @@ namespace Pizzeria_Simone.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            using(BlogContext dbPizza = new BlogContext())
+            {
+                List<Category> categories = dbPizza.Category.ToList();
+
+                PizzaCategory category = new PizzaCategory();
+                category.Pizza= new Pizza();
+            }
             return View("FormPizza");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Pizza nuovaPizza)
+        public IActionResult Create(PizzaCategory nuovaPizza)
         {
             if (!ModelState.IsValid)
             {
+                using (BlogContext dbPizza = new BlogContext())
+                {
+                    List<Category> categories = dbPizza.Category.ToList();
+                    nuovaPizza.Categories = categories;
+                }
+
+              
                 return View("FormPizza", nuovaPizza);
             }
 
-            using(BlogContext dbPizza = new BlogContext())
+            using (BlogContext dbPizza = new BlogContext())
             {
-                Pizza PizzaToCreate = new Pizza(nuovaPizza.Title, nuovaPizza.Description, nuovaPizza.Image, nuovaPizza.Price);
-                dbPizza.Pizzaset.Add(PizzaToCreate);
+                Pizza pizzanuova = new Pizza();
+                pizzanuova.Title = nuovaPizza.Pizza.Title;
+                pizzanuova.Description = nuovaPizza.Pizza.Description;
+                pizzanuova.Image = nuovaPizza.Pizza.Image;
+                pizzanuova.CategoryId = nuovaPizza.Pizza.CategoryId;
+
+                dbPizza.Pizzaset.Add(pizzanuova);
                 dbPizza.SaveChanges();
             }
-            
             return RedirectToAction("Index");
         }
 

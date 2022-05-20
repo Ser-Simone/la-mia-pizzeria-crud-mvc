@@ -25,6 +25,10 @@ namespace Pizzeria_Simone.Models
 
         }
 
+        public int? CategoryId { get; set; }
+
+        public Category? Category { get; set; }
+
         public Pizza(string title, string description, string image, double price)
         {
             this.Title = title;
