@@ -10,17 +10,27 @@ namespace Pizzeria_Simone.Controllers.Api
     public class PizzApiController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string? search)
         {
             List<Pizza> listapizza = new List<Pizza>();
 
             using (BlogContext databPizza = new BlogContext())
             {
-                listapizza = databPizza.Pizzaset.ToList<Pizza>();
+                if( search != null && search != "" )
+                {
+                    listapizza = databPizza.Pizzaset.Where(Pizza => Pizza.Title.Contains(search) || Pizza.Description.Contains(search)).ToList<Pizza>();
+                }
+                else
+                {
+                    listapizza = databPizza.Pizzaset.ToList<Pizza>();
+                }
+                
             }
             return Ok(listapizza);
         }
+
       
+
         [HttpPost]
         public IActionResult FavouritesController ()
         {
